@@ -22,7 +22,7 @@ OS 커널 개발을 시작할 수 있도록 도움을 주는 프로젝트입니�
 - Cygwin 실행
   ```bat
   # cmd를 열고, setup_x86.exe가 위치한 디렉토리로 이동한 후 아래 명령을 실행하세요.
-  cmd> .\setup_x86.exe --allow-unsupported-windows option --site http://ctm.crouchingtigerhiddenfruitbat.org/pub/cygwin/circa/2022/11/23/063457
+  cmd> .\setup-x86.exe --allow-unsupported-windows option --site http://ctm.crouchingtigerhiddenfruitbat.org/pub/cygwin/circa/2022/11/23/063457
   ```
 
 ### 3.2. Cygwin에서 패키지 설치
