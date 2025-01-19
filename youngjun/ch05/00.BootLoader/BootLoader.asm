@@ -38,18 +38,18 @@ START:
     push BOOTLOADERSTARTMESSAGE ; start message address
     push 0                      ; position Y
     push 0                      ; position X
-    call PRINTMESSAGE           ; PRINTMESSAGE(message1, 0, 0)
+    call PRINTMESSAGE           ; PRINTMESSAGE(0, 0, BOOTALODERSTARTMESSAGE)
     add sp, 6
 
     ; print OS image loading message
     push IMAGELOADINGMESSAGE    ; os image loading message address
     push 1                      ; position Y
     push 0                      ; position X
-    call PRINTMESSAGE           ; PRINTMESSAGE(message1, 0, 1)
+    call PRINTMESSAGE           ; PRINTMESSAGE(0, 1, IMAGELOADINGMESSAGE)
     add sp, 6
 
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    ; Load OS image from disk
+    ; load OS image from disk
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 RESETDISK: ; Reset disk before reading
@@ -110,9 +110,9 @@ READDATA:
 READEND:
     ; print the loading OS image success string
     push LOADCOMPLETEMESSAGE
-    push 2                      ; Y
+    push 1                      ; Y
     push 24                     ; X
-    call PRINTMESSAGE           ; PRINTMESSAGE(LOADCOMPLETEMESSAGE, 24, 1)
+    call PRINTMESSAGE           ; PRINTMESSAGE(24, 1, LOADCOMPLETEMESSAGE)
     add sp, 6
 
     jmp 0x1000:0x0000 ; jump to OS image
@@ -124,14 +124,14 @@ HANDLEDISKERROR:
     push DISKERRORMESSAGE
     push 1                      ; Y
     push 24                     ; X
-    call PRINTMESSAGE           ; PRINTMESSAGE(DISKERRORMESSAGE, 24, 1)
+    call PRINTMESSAGE           ; PRINTMESSAGE(24, 1, DISKERRORMESSAGE)
 
     jmp $                       ; infinite loop
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Print Function
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-PRINTMESSAGE: ; PRINTMESSAGE(message_address, position X, position Y)
+PRINTMESSAGE: ; PRINTMESSAGE(position X, position Y, message_address)
     ; function prologue
     push bp
     mov bp, sp
@@ -147,7 +147,9 @@ PRINTMESSAGE: ; PRINTMESSAGE(message_address, position X, position Y)
     mov ax, 0xB800
     mov es, ax                  ; Video memory start address: 0xb8000
 
-    ; calculate the memory address of position X,Y
+    ; calculate the memory address of position X, Y
+    ; string start offset = 80 * 2 * Y + 2 * X
+    ; start memory address = VGA memory(0xB800) + string start offset
 
     ; position Y is the height of screen (0 <= Y <= 24)
     mov ax, word [bp+6]         ; ax = Y
@@ -161,7 +163,7 @@ PRINTMESSAGE: ; PRINTMESSAGE(message_address, position X, position Y)
     mul si                      ; dx:ax = ax * si = 2 * X == ax
     add di, ax                  ; di = memory offset = (di)Y + (ax)X
 
-    mov si, word [bp+8]         ; string to print
+    mov si, word [bp+8]         ; string address
 
 .MESSAGELOOP:
     mov cl, byte [si]           ; each character of string
