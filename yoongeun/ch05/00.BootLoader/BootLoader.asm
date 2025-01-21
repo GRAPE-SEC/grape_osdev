@@ -10,8 +10,8 @@ TOTALSECTORCOUNT: dw 1024
 SECTORNUMBER: db 0x02
 HEADNUMBER: db 0x00
 TRACKNUMBER: db 0x00
-OSLOADINGCOMPLETEMESSEGE: db 'OS loading complete.', 0
-DISKERRORMESSAGE: db 'Disk error is occured.', 0
+OSLOADINGCOMPLETEMESSEGE: db 'OS loading complete.', 0          ; 개씨발 좆같은 전역변수 이슈
+DISKERRORMESSAGE: db 'Disk error is occured.', 0                ; 2시간동안 오타있나 찾았네 개씨발 애미뒤진거
 
 
 
