@@ -103,7 +103,7 @@ READDATA:
 READEND:
     push OSLOADINGCOMPLETEMESSEGE
     push 1
-    push 24
+    push 20
     call PRINTMESSAGE                                           ; 모든 트랙을 읽고 OS 로딩이 완료되면 성공 메시지 출력
     add sp, 6                                                   ; 스택 초기화
     jmp 0x1000:0x0000                                           ; OS 실행
@@ -113,7 +113,7 @@ READEND:
 HANDLEDISKERROR:
     push DISKERRORMESSAGE
     push 1
-    push 24
+    push 20
     call PRINTMESSAGE
     jmp $                                                       ; 에러 발생 시 메시지 출력 후 무한 로딩
 
