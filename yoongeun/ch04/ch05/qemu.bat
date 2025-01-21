@@ -1,1 +1,0 @@
-"C:\Program Files (x86)\qemu\qemu-system-x86_64.exe" -L "C:\Program Files (x86)\qemu" -m 64 -fda Disk.img -M pc
